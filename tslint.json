@@ -9,17 +9,12 @@
         "ter-indent": [true, 4, {
             "SwitchCase": 1
         }],
-        "max-line-length": [true, 200],
-        "variable-name": [true, "allow-pascal-case"],
-        "import-name": [true, {
-            "react": "React",
-            "reactDom": "ReactDOM"
-        }],
+        "max-line-length": [true, 200]
     },
     "exclude": [
         "node_modules"
     ],
     "compilerOptions": {
-        "baseUrl": "./src",
+        "baseUrl": "./src"
     }
 }

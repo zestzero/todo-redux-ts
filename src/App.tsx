@@ -1,31 +1,47 @@
-import logo from './logo.svg';
 import React, { Component } from 'react';
-import Empty from 'components/Empty';
 
-import './App.scss';
+import { Provider, connect } from 'react-redux';
+import { getStoreForTodoApp } from 'Todo/store';
+import { Todo, TodoNamespaceShape } from 'Todo/types';
+import { map } from 'lodash';
+import { getTodos } from 'Todo/selectors';
 
-class App extends Component {
+type TodoProps = Todo;
+function TodoComponent({ title, description, deleted }: TodoProps) {
+  return (
+    <>
+      <span>title: {title}</span>
+      <span>description: {description}</span>
+      <span>deleted: {deleted}</span>
+    </>
+  );
+}
+
+type TodosProps = { todos: Todo[] };
+function Todos({ todos }: TodosProps) {
+  return (
+    <>
+      {todos.map(todoProps => (
+        <TodoComponent {...todoProps} />
+      ))}
+    </>
+  );
+}
+
+const mapStateToProps = (state: TodoNamespaceShape) => ({ todos: map(getTodos(state)) });
+
+const ConnectedWizards = connect<TodosProps, {}, {}>(mapStateToProps)(
+  Todos
+);
+
+class App extends Component<{}> {
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-          <Empty />
-        </header>
-      </div>
+      <Provider store={getStoreForTodoApp()}>
+        <ConnectedWizards />
+      </Provider>
     );
-  }
+  };
 }
 
 export default App;
